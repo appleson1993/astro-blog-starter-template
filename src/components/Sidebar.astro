@@ -1,0 +1,89 @@
+---
+---
+
+<aside class="sidebar">
+	<div class="sidebar-widget">
+		<h3>我想找...</h3>
+		<form action="/search" method="get">
+			<div class="search-box">
+				<input type="text" placeholder="搜尋..." name="q" />
+				<button type="submit">🔍</button>
+			</div>
+		</form>
+	</div>
+
+	<div class="sidebar-widget">
+		<h3>訂閱電子報</h3>
+		<p>訂閱我們的最新文章，絕不錯過任何更新！</p>
+		<div class="social-links-sidebar">
+			<!-- Social placeholders -->
+			<a href="#" class="social-icon">YT</a>
+			<a href="#" class="social-icon">FB</a>
+			<a href="#" class="social-icon">IG</a>
+		</div>
+	</div>
+
+	<div class="sidebar-widget">
+		<h3>文章分類</h3>
+		<ul>
+			<li><a href="/blog">所有文章</a></li>
+			<li><a href="#">自架網站系列</a></li>
+			<li><a href="#">SEO 行銷服務</a></li>
+			<li><a href="#">優質主機系列</a></li>
+			<li><a href="#">WordPress 教學</a></li>
+		</ul>
+	</div>
+</aside>
+
+<style>
+	.sidebar {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.search-box {
+		display: flex;
+		gap: 0.5rem;
+	}
+
+	.search-box input {
+		flex: 1;
+		padding: 0.5rem;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+	}
+
+	.search-box button {
+		background: var(--gray-dark);
+		color: white;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		padding: 0 1rem;
+	}
+
+	.social-links-sidebar {
+		display: flex;
+		gap: 0.5rem;
+		margin-top: 1rem;
+	}
+	
+	.social-icon {
+		background: #f0f0f0;
+		width: 40px;
+		height: 40px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+		text-decoration: none;
+		color: #333;
+		font-weight: bold;
+		font-size: 0.8rem;
+	}
+	
+	.social-icon:hover {
+		background: var(--accent);
+	}
+</style>

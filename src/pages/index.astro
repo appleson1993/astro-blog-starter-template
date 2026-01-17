@@ -2,7 +2,14 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Sidebar from '../components/Sidebar.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { getCollection } from 'astro:content';
+import FormattedDate from '../components/FormattedDate.astro';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+).slice(0, 3);
 ---
 
 <!doctype html>
@@ -12,39 +19,319 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 	</head>
 	<body>
 		<Header />
+		
+		<div class="hero">
+			<div class="hero-content">
+				<span class="hero-subtitle">FUTURE OF MARKETING</span>
+				<h1>網頁行銷實驗室</h1>
+				<p class="hero-description">
+					我們致力於探索 AI 賦能的數位行銷新邊界。透過最先進的自然語言處理與大數據分析，
+					為您的品牌打造前所未有的智能增長引擎。不僅是行銷，更是未來的預知。
+				</p>
+				<div class="hero-actions">
+					<a href="/blog" class="btn-primary">探索最新技術</a>
+					<a href="/about" class="btn-secondary">關於實驗室</a>
+				</div>
+			</div>
+		</div>
+
 		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to build
-				a personal website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to <a href="https://docs.astro.build/"
-					>read the docs
-				</a> or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out <a
-					href="https://github.com/Charca/astro-blog-template"
-					>astro-blog-template
-				</a> by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
+			<section class="features">
+				<div class="feature-card">
+					<div class="feature-icon"><i class="fa-solid fa-robot"></i></div>
+					<h3>AI 智能賦能</h3>
+					<p>自主研發 MarketingGPT 核心，精準預測用戶行為，實現超越人類直覺的營銷決策。</p>
+				</div>
+				<div class="feature-card">
+					<div class="feature-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
+					<h3>光速迭代</h3>
+					<p>利用生成式 AI 自動化產出高品質內容，讓您的品牌聲量以指數級別增長。</p>
+				</div>
+				<div class="feature-card">
+					<div class="feature-icon"><i class="fa-solid fa-chart-line"></i></div>
+					<h3>數據驅動增長</h3>
+					<p>全鏈路數據追蹤與歸因分析，讓每一分預算都轉化為實實在在的營收。</p>
+				</div>
+			</section>
+
+			<div class="section-divider">
+				<h2>最新行銷文章</h2>
+				<p>Latest from the Laboratory</p>
+			</div>
+			
+			<div class="posts-wrapper">
+				<section class="posts-grid-home">
+					{
+						posts.map((post) => (
+							<article class="card">
+								<a href={`/blog/${post.id}/`}>
+									<img width={720} height={360} src={post.data.heroImage} alt="" class="card-image"/>
+								</a>
+								<div class="card-content">
+									<a href={`/blog/${post.id}/`}>
+										<h2 class="title">{post.data.title}</h2>
+									</a>
+									<p class="date">
+										<FormattedDate date={post.data.pubDate} />
+									</p>
+									<p class="excerpt">
+										{post.data.description}
+									</p>
+									<a href={`/blog/${post.id}/`} class="read-more">閱讀更多 →</a>
+								</div>
+							</article>
+						))
+					}
+				</section>
+			</div>
 		</main>
 		<Footer />
 	</body>
 </html>
+
+<style>
+	/* Hero Section */
+	.hero {
+		background: #1a1a1a;
+		background: linear-gradient(135deg, #0F0F0F 0%, #1a1a1a 100%);
+		color: white;
+		padding: 4rem 1rem; /* Reduced padding on mobile */
+		text-align: center;
+		position: relative;
+		overflow: hidden;
+	}
+
+	@media (min-width: 768px) {
+		.hero {
+			padding: 8rem 1rem 6rem 1rem; /* More padding on desktop */
+		}
+	}
+	
+	.hero::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: radial-gradient(circle at 80% 20%, rgba(212, 233, 84, 0.1) 0%, transparent 50%);
+		pointer-events: none;
+	}
+
+	.hero-content {
+		max-width: 800px;
+		margin: 0 auto;
+		position: relative;
+		z-index: 1;
+	}
+
+	.hero-subtitle {
+		display: inline-block;
+		color: var(--accent);
+		font-weight: bold;
+		letter-spacing: 2px;
+		font-size: 0.8rem;
+		margin-bottom: 1rem;
+		background: rgba(212, 233, 84, 0.1);
+		padding: 0.2rem 0.8rem;
+		border-radius: 4px;
+	}
+
+	.hero h1 {
+		font-size: 2.2rem; /* Smaller font on mobile */
+		margin-bottom: 1rem;
+		color: white;
+		line-height: 1.2;
+	}
+
+	@media (min-width: 768px) {
+		.hero h1 {
+			font-size: 3.5rem;
+			margin-bottom: 1.5rem;
+		}
+	}
+
+	.hero-description {
+		font-size: 1rem;
+		color: #ccc;
+		margin-bottom: 2rem;
+		line-height: 1.6;
+		padding: 0 1rem; /* Prevent text touching edges */
+	}
+
+	@media (min-width: 768px) {
+		.hero-description {
+			font-size: 1.2rem;
+			margin-bottom: 2.5rem;
+			line-height: 1.8;
+		}
+	}
+
+	.hero-actions {
+		display: flex;
+		flex-direction: column; /* Stack buttons on mobile */
+		gap: 1rem;
+		justify-content: center;
+		align-items: center;
+	}
+
+	@media (min-width: 768px) {
+		.hero-actions {
+			flex-direction: row;
+		}
+	}
+
+	.btn-secondary {
+		background: transparent;
+		border: 2px solid white;
+		color: white;
+		padding: 0.5em 1.5em;
+		border-radius: 9999px;
+		font-weight: 700;
+		text-decoration: none;
+		transition: all 0.2s;
+	}
+
+	.btn-secondary:hover {
+		background: white;
+		color: #1a1a1a;
+	}
+
+	/* Features Section */
+	.features {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 2rem;
+		margin-bottom: 4rem;
+		position: relative;
+		z-index: 10;
+		max-width: 1200px;
+		margin-left: auto;
+		margin-right: auto;
+		padding: 2rem 1rem 0 1rem; /* Removed negative margin for mobile */
+	}
+
+	@media (min-width: 768px) {
+		.features {
+			grid-template-columns: repeat(2, 1fr); /* 2 cols on tablet */
+			margin-top: -4rem; /* Overlap only on desktop/tablet */
+			padding-top: 0;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.features {
+			grid-template-columns: repeat(3, 1fr); /* 3 cols on desktop */
+		}
+	}
+
+	.feature-card {
+		background: white;
+		padding: 2rem;
+		border-radius: 12px;
+		box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+		text-align: center;
+		transition: transform 0.3s ease;
+	}
+
+	.feature-card:hover {
+		transform: translateY(-10px);
+	}
+
+	.feature-icon {
+		font-size: 3rem;
+		margin-bottom: 1rem;
+	}
+
+	.feature-card h3 {
+		margin-bottom: 1rem;
+		font-size: 1.5rem;
+	}
+
+	.section-divider {
+		text-align: center;
+		margin: 4rem 0 3rem 0;
+	}
+
+	.section-divider h2 {
+		font-size: 2rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.section-divider p {
+		color: var(--accent);
+		font-weight: bold;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		font-size: 0.9rem;
+	}
+
+	/* Keep existing grid styles */
+	.posts-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 2rem;
+	}
+
+	@media (min-width: 768px) {
+		.posts-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	.title {
+		font-size: 1.25rem;
+		margin-bottom: 0.5rem;
+		color: var(--black);
+		text-decoration: none;
+	}
+
+	.title:hover {
+		color: #c1631a;
+	}
+
+	.date {
+		color: #999;
+		font-size: 0.85rem;
+		margin-bottom: 1rem;
+	}
+
+	.excerpt {
+		font-size: 0.95rem;
+		color: #555;
+		margin-bottom: 1.5rem;
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	.read-more {
+		color: #c1631a;
+		font-weight: bold;
+		font-size: 0.9rem;
+	}
+	
+	.read-more:hover {
+		color: var(--black);
+	}
+	
+	/* Homepage specific post grid */
+	.posts-grid-home {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 2rem;
+	}
+
+	@media (min-width: 768px) {
+		.posts-grid-home {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.posts-grid-home {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+</style>
